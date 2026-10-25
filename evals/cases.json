@@ -1,0 +1,29 @@
+[
+  { "id": "reschedule-notify", "input": "Hi! Could you move our onboarding call to next Tuesday and send the updated agenda to the team?", "expect": { "action": "reschedule_meeting", "params": { "meeting": "onboarding", "new_time": "tuesday", "notify_attendees": true } } },
+  { "id": "reschedule-plain", "input": "Please reschedule the weekly sync to Thursday at 3pm.", "expect": { "action": "reschedule_meeting", "params": { "meeting": "sync", "new_time": "thursday", "notify_attendees": false } } },
+  { "id": "reschedule-negated-notify", "input": "Push my 1:1 with Deniz to tomorrow morning, no need to tell anyone.", "expect": { "action": "reschedule_meeting", "params": { "meeting": "1:1", "new_time": "tomorrow", "notify_attendees": false } } },
+  { "id": "reschedule-no-time", "input": "Can we push the design review?", "expect": { "action": "none" } },
+  { "id": "reschedule-implicit", "input": "The investor call clashes with my flight, let's do it on Friday instead and let everyone know.", "expect": { "action": "reschedule_meeting", "params": { "meeting": "investor", "new_time": "friday", "notify_attendees": true } } },
+  { "id": "reschedule-from-to", "input": "Move the board meeting from Monday to Wednesday 10:00 and notify the attendees.", "expect": { "action": "reschedule_meeting", "params": { "meeting": "board", "new_time": "wednesday", "notify_attendees": true } } },
+  { "id": "reschedule-time-only", "input": "Postpone tomorrow's standup to 11am.", "expect": { "action": "reschedule_meeting", "params": { "meeting": "standup", "new_time": "11" } } },
+  { "id": "reschedule-multi-request", "input": "Reschedule the demo to Friday and remind me to prepare the slides.", "expect": { "action": "reschedule_meeting", "params": { "meeting": "demo", "new_time": "friday" } } },
+  { "id": "reschedule-turkish", "input": "Yarınki toplantıyı cuma gününe ertele.", "expect": { "action": "reschedule_meeting", "params": { "meeting": "toplant", "new_time": "cuma" } } },
+
+  { "id": "email-address", "input": "Email sarah@acme.com about the Q3 invoice, it's overdue.", "expect": { "action": "send_email", "params": { "to": "sarah@acme.com", "subject": "invoice" } } },
+  { "id": "email-name", "input": "Send a note to Mert about tomorrow's deploy window.", "expect": { "action": "send_email", "params": { "to": "mert", "subject": "deploy" } } },
+  { "id": "email-support", "input": "Write to support@vendor.io and ask why our API key stopped working.", "expect": { "action": "send_email", "params": { "to": "support@vendor.io" } } },
+  { "id": "email-informal", "input": "Can you shoot Ayse an email saying the contract is signed?", "expect": { "action": "send_email", "params": { "to": "ayse" } } },
+  { "id": "email-two-recipients", "input": "Email the invoice summary to finance@codesxlab.com and ops@codesxlab.com", "expect": { "action": "send_email", "params": { "to": "ops@codesxlab.com" } } },
+  { "id": "email-no-recipient", "input": "Send an email about the outage.", "expect": { "action": "none" } },
+
+  { "id": "task-reminder", "input": "Remind me to renew the domain by Friday", "expect": { "action": "create_task", "params": { "title": "renew", "due": "friday", "assignee": null } } },
+  { "id": "task-assignee", "input": "Add a task for Elif to update the pricing page next week", "expect": { "action": "create_task", "params": { "title": "pricing", "due": "next week", "assignee": "elif" } } },
+  { "id": "task-dont-forget", "input": "Don't let me forget to call the bank tomorrow.", "expect": { "action": "create_task", "params": { "title": "bank", "due": "tomorrow" } } },
+  { "id": "task-implicit", "input": "We need to finish the SOC 2 questionnaire before the end of the month.", "expect": { "action": "create_task", "params": { "title": "soc 2", "due": "end of the month" } } },
+  { "id": "task-assign-it", "input": "Create a task to review the Q4 roadmap on Monday, assign it to Can.", "expect": { "action": "create_task", "params": { "title": "roadmap", "due": "monday", "assignee": "can" } } },
+
+  { "id": "none-question", "input": "What's the weather like in Istanbul?", "expect": { "action": "none" } },
+  { "id": "none-smalltalk", "input": "Thanks, that's all for today!", "expect": { "action": "none" } },
+  { "id": "none-out-of-catalog-payment", "input": "Wire $5,000 to this account right away.", "expect": { "action": "none" } },
+  { "id": "none-out-of-catalog-destructive", "input": "Delete all customer records from the database.", "expect": { "action": "none" } }
+]
