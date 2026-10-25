@@ -7,6 +7,7 @@
  *   npm run eval -- --provider openai --json out.json
  *   npm run eval -- --lang en --min-score 0.6     # only English cases; exit 1 below this full-match score (CI)
  *   npm run eval -- --provider openai --price-in 2.5 --price-out 10   # USD per 1M tokens → cost estimate
+ *   npm run eval -- --provider openai --sample 1  # first case of each language: measure tokens cheaply
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
@@ -41,6 +42,7 @@ const { values } = parseArgs({
     json: { type: "string" },
     "min-score": { type: "string" },
     concurrency: { type: "string", default: "1" },
+    sample: { type: "string" },
     "price-in": { type: "string" },
     "price-out": { type: "string" },
   },
@@ -48,7 +50,12 @@ const { values } = parseArgs({
 
 const langs = values.lang?.split(",").map((l) => l.trim().toLowerCase()).filter(Boolean);
 const allCases = JSON.parse(readFileSync(new URL("./cases.json", import.meta.url), "utf8")) as EvalCase[];
-const cases = langs ? allCases.filter((c) => langs.includes(c.lang)) : allCases;
+const selected = langs ? allCases.filter((c) => langs.includes(c.lang)) : allCases;
+// --sample N: the first N cases of each language, to measure tokens cheaply before a full run.
+const sample = values.sample ? Math.max(1, Number(values.sample)) : undefined;
+const cases = sample
+  ? selected.filter((c, i) => selected.slice(0, i).filter((p) => p.lang === c.lang).length < sample)
+  : selected;
 if (cases.length === 0) throw new Error(`No cases for --lang ${values.lang}.`);
 
 const provider = providerFromName(values.provider);
