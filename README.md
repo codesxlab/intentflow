@@ -16,7 +16,7 @@ intentflow takes a free-text request ("Move our onboarding call to next Tuesday 
 
 **[Try the live demo →](https://codesxlab.github.io/intentflow/)** It runs in your browser with the rule-based mock provider; nothing you type leaves the page.
 
-> **Status:** early prototype by [CodesXlab](https://www.codesxlab.com). The API may change, the queue is in-memory, and the package is not published to npm yet (it will be `@codesxlab/intentflow`).
+> **Status:** early prototype by [CodesXlab](https://www.codesxlab.com). The API may change and the queue is in-memory.
 
 ## How it works
 
@@ -47,6 +47,12 @@ OPENAI_API_KEY=...    INTENTFLOW_PROVIDER=openai    npm run demo
 The demo's executors are simulated: approving shows what *would* happen. Nothing is sent or booked.
 
 ## Use it as a library
+
+```bash
+npm install @codesxlab/intentflow zod
+```
+
+`zod` is a peer dependency, so your action schemas and intentflow share one copy.
 
 ```ts
 import { z } from "zod";
@@ -156,7 +162,6 @@ npm run eval
 ## Roadmap
 
 - Handle missing details: no empty required fields, return `none` with the missing detail named; re-run the evals
-- Publish to npm as `@codesxlab/intentflow`
 - Eval results for more providers and models (Claude, smaller OpenAI models) and more languages
 - Persistent queue storage (SQLite / Postgres adapters)
 - More action catalogs (CRM updates, support triage, document intake)
