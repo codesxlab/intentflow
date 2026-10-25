@@ -87,7 +87,7 @@ Reviewers can also `queue.reject(id, by, reason)` or correct the parameters firs
 | Provider | Default model | How it gets structured output |
 |---|---|---|
 | `anthropicProvider()` | `claude-opus-5-5` | `client.beta.messages.parse` with `output_config.format`; effort `medium`; server-side refusal fallback (`fallbacks: "default"`) on by default |
-| `openaiProvider()` | `gpt-5` (override with `INTENTFLOW_OPENAI_MODEL`) | Responses API `responses.parse` with a strict JSON-schema text format |
+| `openaiProvider()` | `gpt-6-astra` (override with `INTENTFLOW_OPENAI_MODEL`, e.g. `gpt-6.1-sol` or `gpt-6-luna`) | Responses API `responses.parse` with a strict JSON-schema text format |
 | `mockProvider()` | `rules-v1` | Deterministic keyword rules for the example catalog. No key, used by the demo, tests, and CI |
 
 Every provider's output is validated again with zod in `createIntentFlow`. A custom provider implements one method:

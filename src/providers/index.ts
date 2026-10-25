@@ -5,7 +5,7 @@ import type { Provider } from "./types.js";
 
 export * from "./types.js";
 export { anthropicProvider, DEFAULT_ANTHROPIC_MODEL, type AnthropicProviderOptions } from "./anthropic.js";
-export { openaiProvider, type OpenAIProviderOptions } from "./openai.js";
+export { openaiProvider, DEFAULT_OPENAI_MODEL, type OpenAIProviderOptions } from "./openai.js";
 export { mockProvider } from "./mock.js";
 
 export type ProviderName = "mock" | "anthropic" | "openai";

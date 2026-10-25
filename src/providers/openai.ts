@@ -5,13 +5,15 @@ import { ProviderOutputError, type CompletionRequest, type Provider } from "./ty
 export interface OpenAIProviderOptions {
   /** Defaults to `new OpenAI()`, which reads OPENAI_API_KEY. */
   client?: OpenAI;
-  /** Defaults to INTENTFLOW_OPENAI_MODEL, then "gpt-5". */
+  /** Defaults to INTENTFLOW_OPENAI_MODEL, then "gpt-6-astra" (OpenAI's recommended default as of Oct 2026). */
   model?: string;
 }
 
+export const DEFAULT_OPENAI_MODEL = "gpt-6-astra";
+
 export function openaiProvider(options: OpenAIProviderOptions = {}): Provider {
   const client = options.client ?? new OpenAI();
-  const model = options.model ?? process.env.INTENTFLOW_OPENAI_MODEL ?? "gpt-5";
+  const model = options.model ?? process.env.INTENTFLOW_OPENAI_MODEL ?? DEFAULT_OPENAI_MODEL;
 
   return {
     name: "openai",
