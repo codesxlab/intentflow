@@ -1,0 +1,1279 @@
+{
+  "date": "2026-10-25T19:08:31.126Z",
+  "provider": "mock",
+  "model": "rules-v1",
+  "langs": [
+    "en",
+    "tr",
+    "de"
+  ],
+  "cases": 71,
+  "actionMatch": 0.4507042253521127,
+  "fullMatch": 0.4084507042253521,
+  "byLang": {
+    "en": {
+      "cases": 23,
+      "actionMatch": 0.8695652173913043,
+      "fullMatch": 0.7391304347826086
+    },
+    "tr": {
+      "cases": 24,
+      "actionMatch": 0.25,
+      "fullMatch": 0.25
+    },
+    "de": {
+      "cases": 24,
+      "actionMatch": 0.25,
+      "fullMatch": 0.25
+    }
+  },
+  "usage": {
+    "calls": 0,
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "results": [
+    {
+      "id": "reschedule-notify",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 4,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "onboarding call",
+          "new_time": "next Tuesday",
+          "notify_attendees": true
+        },
+        "summary": "Move the onboarding call to next Tuesday and notify attendees."
+      }
+    },
+    {
+      "id": "reschedule-plain",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 1,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "weekly sync",
+          "new_time": "Thursday at 3pm",
+          "notify_attendees": false
+        },
+        "summary": "Move the weekly sync to Thursday at 3pm."
+      }
+    },
+    {
+      "id": "reschedule-negated-notify",
+      "lang": "en",
+      "ok": false,
+      "actionOk": true,
+      "problems": [
+        "notify_attendees: expected false, got true"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "1:1",
+          "new_time": "tomorrow morning",
+          "notify_attendees": true
+        },
+        "summary": "Move the 1:1 to tomorrow morning and notify attendees."
+      }
+    },
+    {
+      "id": "reschedule-no-time",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "The request asks to move a meeting but does not say when to."
+      }
+    },
+    {
+      "id": "reschedule-implicit",
+      "lang": "en",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "reschedule-from-to",
+      "lang": "en",
+      "ok": false,
+      "actionOk": true,
+      "problems": [
+        "new_time: expected \"wednesday\", got \"Monday\""
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "board meeting",
+          "new_time": "Monday",
+          "notify_attendees": true
+        },
+        "summary": "Move the board meeting to Monday and notify attendees."
+      }
+    },
+    {
+      "id": "reschedule-time-only",
+      "lang": "en",
+      "ok": false,
+      "actionOk": true,
+      "problems": [
+        "new_time: expected \"11\", got \"tomorrow\""
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "standup",
+          "new_time": "tomorrow",
+          "notify_attendees": false
+        },
+        "summary": "Move the standup to tomorrow."
+      }
+    },
+    {
+      "id": "reschedule-multi-request",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "demo",
+          "new_time": "Friday",
+          "notify_attendees": false
+        },
+        "summary": "Move the demo to Friday."
+      }
+    },
+    {
+      "id": "email-address",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 1,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "sarah@acme.com"
+          ],
+          "subject": "The Q3 invoice, it's overdue",
+          "body": "Email sarah@acme.com about the Q3 invoice, it's overdue."
+        },
+        "summary": "Email sarah@acme.com with the subject \"The Q3 invoice, it's overdue\"."
+      }
+    },
+    {
+      "id": "email-name",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Mert"
+          ],
+          "subject": "Tomorrow's deploy window",
+          "body": "Send a note to Mert about tomorrow's deploy window."
+        },
+        "summary": "Email Mert with the subject \"Tomorrow's deploy window\"."
+      }
+    },
+    {
+      "id": "email-support",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "support@vendor.io"
+          ],
+          "subject": "Quick note",
+          "body": "Write to support@vendor.io and ask why our API key stopped working."
+        },
+        "summary": "Email support@vendor.io with the subject \"Quick note\"."
+      }
+    },
+    {
+      "id": "email-informal",
+      "lang": "en",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "The request asks for an email but does not say who it is for."
+      }
+    },
+    {
+      "id": "email-two-recipients",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "finance@codesxlab.com",
+            "ops@codesxlab.com"
+          ],
+          "subject": "Quick note",
+          "body": "Email the invoice summary to finance@codesxlab.com and ops@codesxlab.com"
+        },
+        "summary": "Email finance@codesxlab.com, ops@codesxlab.com with the subject \"Quick note\"."
+      }
+    },
+    {
+      "id": "email-no-recipient",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "The request asks for an email but does not say who it is for."
+      }
+    },
+    {
+      "id": "task-reminder",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 1,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Renew the domain",
+          "due": "Friday",
+          "assignee": null
+        },
+        "summary": "Create the task \"Renew the domain\" due Friday."
+      }
+    },
+    {
+      "id": "task-assignee",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "To update the pricing page",
+          "due": "next week",
+          "assignee": "Elif"
+        },
+        "summary": "Create the task \"To update the pricing page\" due next week for Elif."
+      }
+    },
+    {
+      "id": "task-dont-forget",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Call the bank",
+          "due": "tomorrow",
+          "assignee": null
+        },
+        "summary": "Create the task \"Call the bank\" due tomorrow."
+      }
+    },
+    {
+      "id": "task-implicit",
+      "lang": "en",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "task-assign-it",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Review the Q4 roadmap",
+          "due": "on Monday",
+          "assignee": "Can"
+        },
+        "summary": "Create the task \"Review the Q4 roadmap\" due on Monday for Can."
+      }
+    },
+    {
+      "id": "none-question",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "none-smalltalk",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "none-out-of-catalog-payment",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "none-out-of-catalog-destructive",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-notify",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-plain",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-negated-notify",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-no-time",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-implicit",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-from-to",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-time-only",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-reschedule-multi-request",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "reschedule-turkish",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-email-address",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-email-name",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-email-support",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-email-informal",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-email-two-recipients",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-email-no-recipient",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-task-reminder",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-task-assignee",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-task-dont-forget",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-task-implicit",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-task-assign-it",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-none-question",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-none-smalltalk",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-none-out-of-catalog-payment",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "tr-none-out-of-catalog-destructive",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-notify",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-plain",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-negated-notify",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-no-time",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-implicit",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-from-to",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-time-only",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-multi-request",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-reschedule-short",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected reschedule_meeting, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-email-address",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-email-name",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-email-support",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-email-informal",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-email-two-recipients",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected send_email, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-email-no-recipient",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-task-reminder",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-task-assignee",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-task-dont-forget",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-task-implicit",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-task-assign-it",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected create_task, got none"
+      ],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-none-question",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-none-smalltalk",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-none-out-of-catalog-payment",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    },
+    {
+      "id": "de-none-out-of-catalog-destructive",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 0,
+      "calls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "output": {
+        "kind": "none",
+        "reason": "No action in the catalog matches this request."
+      }
+    }
+  ]
+}

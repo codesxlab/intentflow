@@ -18,13 +18,16 @@ export function openaiProvider(options: OpenAIProviderOptions = {}): Provider {
   return {
     name: "openai",
     model,
-    async complete<T>({ system, input, schema, schemaName }: CompletionRequest<T>): Promise<T> {
+    async complete<T>({ system, input, schema, schemaName, onUsage }: CompletionRequest<T>): Promise<T> {
       const response = await client.responses.parse({
         model,
         instructions: system,
         input,
         text: { format: zodTextFormat(schema, schemaName) },
       });
+      if (response.usage) {
+        onUsage?.({ inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens });
+      }
       if (response.output_parsed == null) {
         throw new ProviderOutputError("The response did not contain JSON matching the schema.", "openai");
       }

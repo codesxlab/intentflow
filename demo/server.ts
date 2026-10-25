@@ -10,20 +10,12 @@
  */
 import { readFileSync } from "node:fs";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { ApprovalQueue, ProposalStateError, createIntentFlow, officeActions, providerFromName, type Executor } from "../src/index.js";
+import { ApprovalQueue, ProposalStateError, createIntentFlow, officeActions, providerFromName } from "../src/index.js";
+import { simulatedExecutors } from "./simulated.js";
 
 const provider = providerFromName(process.env.INTENTFLOW_PROVIDER);
 const flow = createIntentFlow({ provider, actions: officeActions });
-
-const simulate = (describe: (params: Record<string, unknown>) => string): Executor => (params) => ({ simulated: true, message: describe(params) });
-const queue = new ApprovalQueue({
-  actions: officeActions,
-  executors: {
-    reschedule_meeting: simulate((p) => `Would move "${p.meeting}" to ${p.new_time}${p.notify_attendees ? " and notify attendees" : ""}.`),
-    send_email: simulate((p) => `Would email ${(p.to as string[]).join(", ")}: "${p.subject}".`),
-    create_task: simulate((p) => `Would create the task "${p.title}"${p.due ? ` due ${p.due}` : ""}${p.assignee ? ` for ${p.assignee}` : ""}.`),
-  },
-});
+const queue = new ApprovalQueue({ actions: officeActions, executors: simulatedExecutors });
 
 const page = readFileSync(new URL("./index.html", import.meta.url), "utf8");
 const MAX_BODY = 16 * 1024;

@@ -1,21 +1,34 @@
 {
-  "name": "intentflow",
+  "name": "@codesxlab/intentflow",
   "version": "0.1.0",
   "description": "Turn messages into reviewed, structured actions with any LLM. Model-agnostic, schema-validated, human-in-the-loop.",
   "type": "module",
-  "private": true,
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
     "demo": "tsx demo/server.ts",
-    "eval": "tsx evals/run.ts"
+    "eval": "tsx evals/run.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build",
+    "site": "tsx demo/build-site.ts"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "repository": {
     "type": "git",
@@ -36,14 +49,21 @@
     "url": "https://github.com/codesxlab/intentflow/issues"
   },
   "homepage": "https://github.com/codesxlab/intentflow#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",
-    "openai": "^7.43.0",
+    "openai": "^7.43.0"
+  },
+  "peerDependencies": {
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
+    "esbuild": "^0.28.2",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "zod": "^4.6.7"
   }
 }

@@ -5,6 +5,14 @@ export interface ActionSummary {
   description: string;
 }
 
+/** Tokens one provider call used, as reported by the API. */
+export interface TokenUsage {
+  /** All input tokens, including cached ones. */
+  inputTokens: number;
+  /** All output tokens, including reasoning tokens. */
+  outputTokens: number;
+}
+
 export interface CompletionRequest<T> {
   /** Instructions for the model. */
   system: string;
@@ -16,6 +24,8 @@ export interface CompletionRequest<T> {
   schemaName: string;
   /** The action catalog; also present in `system`, exposed for providers that don't call a model. */
   actions: readonly ActionSummary[];
+  /** Called once per API call with the tokens it used. Providers that don't call a model never call it. */
+  onUsage?: (usage: TokenUsage) => void;
 }
 
 /** Anything that can turn a request into schema-shaped output: a hosted LLM, a local model, or a rule set. */

@@ -27,7 +27,7 @@ export function anthropicProvider(options: AnthropicProviderOptions = {}): Provi
   return {
     name: "anthropic",
     model,
-    async complete<T>({ system, input, schema }: CompletionRequest<T>): Promise<T> {
+    async complete<T>({ system, input, schema, onUsage }: CompletionRequest<T>): Promise<T> {
       const response = await client.beta.messages.parse({
         model,
         max_tokens: options.maxTokens ?? 16000,
@@ -38,6 +38,12 @@ export function anthropicProvider(options: AnthropicProviderOptions = {}): Provi
           format: betaZodOutputFormat(schema),
         },
         ...(refusalFallback ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const } : {}),
+      });
+
+      const { usage } = response;
+      onUsage?.({
+        inputTokens: usage.input_tokens + (usage.cache_creation_input_tokens ?? 0) + (usage.cache_read_input_tokens ?? 0),
+        outputTokens: usage.output_tokens,
       });
 
       if (response.stop_reason === "refusal") {

@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import { findAction, type ActionCatalog } from "./actions.js";
 import type { ActionExtraction } from "./schema.js";
 
@@ -60,7 +59,8 @@ export class ApprovalQueue {
     this.#actions = options.actions;
     this.#executors = options.executors ?? {};
     this.#now = options.now ?? (() => new Date());
-    this.#newId = options.newId ?? randomUUID;
+    // Global Web Crypto: available in Node 19+ and in browsers, so the queue runs in both.
+    this.#newId = options.newId ?? (() => crypto.randomUUID());
   }
 
   propose(extraction: ActionExtraction, meta: { input: string; provider: string; model: string }): Proposal {

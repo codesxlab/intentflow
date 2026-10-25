@@ -13,15 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [20, 22]
+        node: [22, 24]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          check-latest: true
           cache: npm
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-      # Mock provider only: no API keys in CI. Fails if the rule-based baseline regresses.
-      - run: npm run eval -- --min-score 0.7
+      - run: npm run build
+      # Mock provider only: no API keys in CI. The keyword rules only know English,
+      # so the gate covers the English cases. Fails if that baseline regresses.
+      - run: npm run eval -- --lang en --min-score 0.7

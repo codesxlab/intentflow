@@ -7,7 +7,9 @@ import {
   createIntentFlow,
   defineAction,
   officeActions,
+  type CompletionRequest,
   type Provider,
+  type TokenUsage,
 } from "../src/index.js";
 import { z } from "zod";
 
@@ -70,6 +72,26 @@ describe("createIntentFlow", () => {
     const flow = createIntentFlow({ provider, actions: officeActions });
     const result = await flow.extract("Wire $5,000 to this account");
     assert.deepEqual(result, { kind: "none", reason: "n/a" });
+  });
+
+  it("reports token usage for every provider call, retries included", async () => {
+    const outputs = [{ nope: true }, valid];
+    let calls = 0;
+    const provider: Provider = {
+      name: "metered",
+      model: "test",
+      async complete<T>({ onUsage }: CompletionRequest<T>): Promise<T> {
+        onUsage?.({ inputTokens: 100, outputTokens: 20 });
+        return outputs[calls++] as T;
+      },
+    };
+    const usage: TokenUsage[] = [];
+    const flow = createIntentFlow({ provider, actions: officeActions });
+    await flow.extract("Email sarah@acme.com about the invoice", { onUsage: (u) => usage.push(u) });
+    assert.deepEqual(usage, [
+      { inputTokens: 100, outputTokens: 20 },
+      { inputTokens: 100, outputTokens: 20 },
+    ]);
   });
 
   it("rejects empty and oversized input before calling the provider", async () => {
