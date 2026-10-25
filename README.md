@@ -3,6 +3,7 @@
 **Turn messages into reviewed, structured actions with any LLM.**
 
 [![CI](https://github.com/codesxlab/intentflow/actions/workflows/ci.yml/badge.svg)](https://github.com/codesxlab/intentflow/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@codesxlab/intentflow.svg)](https://www.npmjs.com/package/@codesxlab/intentflow)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 intentflow takes a free-text request ("Move our onboarding call to next Tuesday and send the agenda to the team"), asks a language model to turn it into **one action from a catalog you define**, validates the result against a schema, and puts it in an **approval queue**. Nothing runs until a person approves it.
