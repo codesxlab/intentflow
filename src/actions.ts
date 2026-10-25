@@ -11,6 +11,12 @@ export interface ActionDefinition<P extends z.ZodObject = z.ZodObject> {
   name: string;
   description: string;
   params: P;
+  /**
+   * Text fields whose values must appear in the request itself, such as recipients. A proposal
+   * whose value for one of these is not found in the request becomes "none" instead of
+   * reaching the queue with a made-up value. See `checkDetails`.
+   */
+  grounded?: readonly (keyof z.infer<P> & string)[];
 }
 
 const ACTION_NAME = /^[a-z][a-z0-9_]{0,63}$/;
@@ -21,6 +27,11 @@ export function defineAction<P extends z.ZodObject>(definition: ActionDefinition
   }
   if (!definition.description.trim()) {
     throw new Error(`Action "${definition.name}" needs a description; the model uses it to choose actions.`);
+  }
+  for (const field of definition.grounded ?? []) {
+    if (!(field in definition.params.shape)) {
+      throw new Error(`Action "${definition.name}": grounded field "${field}" is not one of its params.`);
+    }
   }
   return definition;
 }
@@ -42,8 +53,13 @@ export const officeActions = [
     params: z.object({
       to: z.array(z.string()).min(1).describe("Recipients as given: email addresses or names."),
       subject: z.string().describe("A short subject line based on the request."),
-      body: z.string().describe("The message to send, using only details the request provides."),
+      body: z
+        .string()
+        .nullable()
+        .describe("The message to send, using only details the request provides, or null if it gives no message (e.g. only a document to forward)."),
     }),
+    // Never email an address or person the request did not name.
+    grounded: ["to"],
   }),
   defineAction({
     name: "create_task",

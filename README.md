@@ -91,6 +91,24 @@ if (extraction.kind === "action") {
 
 Reviewers can also `queue.reject(id, by, reason)` or correct the parameters first with `queue.edit(id, params, by)`. Edits are validated against the same schema.
 
+### Missing or made-up details
+
+Models tend to fill a gap rather than admit it: asked to "push the design review" with no new time, they propose the move anyway with `"later"` or an empty string (see [Evals](#evals)). So after the schema check, `createIntentFlow` runs `checkDetails` and turns such a proposal into `none`, with a reason a reviewer can act on:
+
+- A **required** text field (not `.nullable()`) must not be empty or a placeholder such as `"later"`, `"TBD"`, `"null"`, `"später"`, or `"belirtilmedi"`. Mark fields the request may leave open as `.nullable()`; they are not checked.
+- A field listed in the action's **`grounded`** must appear in the request itself (ignoring case and accents), so the model cannot invent it:
+
+```ts
+defineAction({
+  name: "send_email",
+  description: "Send a new email message to one or more recipients.",
+  params: z.object({ to: z.array(z.string()).min(1), subject: z.string(), body: z.string().nullable() }),
+  grounded: ["to"], // never email an address the request did not name
+});
+```
+
+Pass `checkDetails: false` to `createIntentFlow` to get the provider's proposal as is.
+
 ## Providers
 
 | Provider | Default model | How it gets structured output |
@@ -120,6 +138,7 @@ npm run eval -- --provider openai --sample 1            # first case per languag
 npm run eval -- --lang tr,de                            # only some languages
 npm run eval -- --provider openai --price-in 10 --price-out 50   # USD per 1M tokens → cost estimate
 npm run eval -- --ids de-email-no-recipient             # re-run specific cases
+npm run eval -- --replay evals/published/openai-gpt-6-astra.json   # recorded outputs, no API calls
 ```
 
 [`evals/cases.json`](evals/cases.json) holds 71 requests (23 English, 24 Turkish, 24 German) with the expected action and the parameters a reviewer would check. Every language covers the same situations: plain and implicit requests, negations ("no need to tell anyone"), several requests in one sentence, missing details, and out-of-catalog asks (payments, deleting data).
@@ -133,7 +152,9 @@ Measured on 2026-10-25, full match (action + parameters) with action accuracy in
 
 Raw results, including every model output: [`evals/published/`](evals/published/). The full gpt-6-astra run (71 calls, 47,041 input and 10,221 output tokens) cost about $0.98 at the listed standard rates of $10 / $50 per 1M tokens.
 
-**What the numbers show.** The model gets every action right in all three languages, with one exception that repeats in each language: requests that **leave out a required detail**. Asked "Can we push the design review?" (no new time) or "Send an email about the outage" (no recipient), it proposes the action anyway instead of returning `none`, filling the gap with `"later"`, an empty string, or, in one English case, an invented address (`operations@company.com`) and an invented message. These six cases are why intentflow keeps a person in the loop, and they are the next thing to fix: stricter schemas (no empty required strings) and a prompt rule for missing details, then the same suite again.
+**What the numbers show.** The model gets every action right in all three languages, with one exception that repeats in each language: requests that **leave out a required detail**. Asked "Can we push the design review?" (no new time) or "Send an email about the outage" (no recipient), it proposes the action anyway instead of returning `none`, filling the gap with `"later"`, an empty string, or, in one English case, an invented address (`operations@company.com`) and an invented message. These six cases are why intentflow keeps a person in the loop.
+
+**The fix, measured offline.** Since then, intentflow checks details after the schema (see [Missing or made-up details](#missing-or-made-up-details)), and the prompt asks the model to return `none` when a required detail is missing. Replaying the 71 recorded gpt-6-astra outputs through the new pipeline (`--replay`, no API calls) turns all six failures into `none` without rejecting any of the 65 correct proposals: 100% on the recorded outputs ([report](evals/published/replays/)). This measures the checks, not the new prompt rule, and the checks were written after seeing these failures, so a live re-run is still needed; it is next on the list. The checks have their own tests on cases outside the suite (placeholder words inside real values, Turkish suffixes, accents, partly invented recipient lists).
 
 The keyword baseline only knows English, so in Turkish and German it can only get the "no action" cases right. CI runs it on the English cases and fails if it drops below 70%.
 
@@ -145,10 +166,11 @@ src/
   schema.ts         builds the "one action or none" schema from a catalog
   prompt.ts         the system prompt
   flow.ts           createIntentFlow(): extract, validate, retry
+  details.ts        checkDetails(): missing or made-up required details become "none"
   queue.ts          ApprovalQueue: pending → approved/rejected → executed/failed, with audit trail
   providers/        anthropic.ts, openai.ts, mock.ts
 demo/               local web demo (node:http + one HTML page); build-site.ts makes the hosted version
-evals/              cases.json, the runner, and published/ results
+evals/              cases.json, the runner, replay.ts, and published/ results
 tests/              node:test suites
 ```
 
@@ -162,7 +184,7 @@ npm run eval
 
 ## Roadmap
 
-- Handle missing details: no empty required fields, return `none` with the missing detail named; re-run the evals
+- Re-run the live evals with the missing-detail prompt rule and checks (measured so far on recorded outputs only)
 - Eval results for more providers and models (Claude, smaller OpenAI models) and more languages
 - Persistent queue storage (SQLite / Postgres adapters)
 - More action catalogs (CRM updates, support triage, document intake)

@@ -1,4 +1,5 @@
 import type { ActionCatalog } from "./actions.js";
+import { checkDetails } from "./details.js";
 import { buildSystemPrompt } from "./prompt.js";
 import { buildResultSchema, type Extraction } from "./schema.js";
 import { ProviderOutputError, type Provider, type TokenUsage } from "./providers/types.js";
@@ -8,6 +9,11 @@ export interface IntentFlowOptions {
   actions: ActionCatalog;
   /** How many times to ask again when the output is missing or invalid. Default 2 attempts in total. */
   maxAttempts?: number;
+  /**
+   * Turn proposals with a missing or made-up required detail into "none" (see `checkDetails`).
+   * Default true; set to false to get the provider's proposal as is.
+   */
+  checkDetails?: boolean;
 }
 
 export interface ExtractOptions {
@@ -24,7 +30,7 @@ export interface IntentFlow {
 
 export const MAX_INPUT_LENGTH = 8000;
 
-export function createIntentFlow({ provider, actions, maxAttempts = 2 }: IntentFlowOptions): IntentFlow {
+export function createIntentFlow({ provider, actions, maxAttempts = 2, checkDetails: check = true }: IntentFlowOptions): IntentFlow {
   const schema = buildResultSchema(actions);
   const system = buildSystemPrompt(actions);
   const summaries = actions.map(({ name, description }) => ({ name, description }));
@@ -45,7 +51,7 @@ export function createIntentFlow({ provider, actions, maxAttempts = 2 }: IntentF
           const output = await provider.complete({ system, input: text, schema, schemaName: "intent_proposal", actions: summaries, onUsage });
           // Validate again here: providers are pluggable, and a custom one may skip validation.
           const checked = schema.safeParse(output);
-          if (checked.success) return checked.data.result;
+          if (checked.success) return check ? checkDetails(checked.data.result, text, actions) : checked.data.result;
           lastError = new ProviderOutputError("Provider output did not match the schema.", provider.name, { cause: checked.error });
         } catch (error) {
           if (!(error instanceof ProviderOutputError)) throw error;

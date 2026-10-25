@@ -9,10 +9,13 @@
  *   npm run eval -- --provider openai --price-in 2.5 --price-out 10   # USD per 1M tokens → cost estimate
  *   npm run eval -- --provider openai --sample 1  # first case of each language: measure tokens cheaply
  *   npm run eval -- --provider openai --ids de-email-no-recipient   # re-run specific cases
+ *   npm run eval -- --replay evals/published/openai-gpt-6-astra.json  # recorded outputs, no API calls
+ *   npm run eval -- --replay … --no-check-details                     # the same, without the detail checks
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { createIntentFlow, officeActions, providerFromName, type Extraction } from "../src/index.js";
+import { replayProvider } from "./replay.js";
 
 interface EvalCase {
   id: string;
@@ -45,6 +48,8 @@ const { values } = parseArgs({
     concurrency: { type: "string", default: "1" },
     sample: { type: "string" },
     ids: { type: "string" },
+    replay: { type: "string" },
+    "no-check-details": { type: "boolean", default: false },
     "price-in": { type: "string" },
     "price-out": { type: "string" },
   },
@@ -62,8 +67,8 @@ const cases = sample
   : selected;
 if (cases.length === 0) throw new Error(`No cases for --lang ${values.lang}.`);
 
-const provider = providerFromName(values.provider);
-const flow = createIntentFlow({ provider, actions: officeActions });
+const provider = values.replay ? replayProvider(values.replay, allCases) : providerFromName(values.provider);
+const flow = createIntentFlow({ provider, actions: officeActions, checkDetails: !values["no-check-details"] });
 const concurrency = Math.max(1, Number(values.concurrency) || 1);
 
 /** Strings match if the expected text appears in the actual value (case-insensitive); arrays match if any item does. */
