@@ -1,0 +1,1516 @@
+{
+  "date": "2026-10-25T20:16:48.519Z",
+  "provider": "openai",
+  "model": "gpt-6-astra",
+  "langs": [
+    "en",
+    "tr",
+    "de"
+  ],
+  "cases": 71,
+  "actionMatch": 0.9154929577464789,
+  "fullMatch": 0.9154929577464789,
+  "byLang": {
+    "en": {
+      "cases": 23,
+      "actionMatch": 0.9130434782608695,
+      "fullMatch": 0.9130434782608695
+    },
+    "tr": {
+      "cases": 24,
+      "actionMatch": 0.9166666666666666,
+      "fullMatch": 0.9166666666666666
+    },
+    "de": {
+      "cases": 24,
+      "actionMatch": 0.9166666666666666,
+      "fullMatch": 0.9166666666666666
+    }
+  },
+  "usage": {
+    "calls": 71,
+    "inputTokens": 47041,
+    "outputTokens": 10221
+  },
+  "costUsd": 0.98146,
+  "pricePerMTokens": {
+    "input": 10,
+    "output": 50
+  },
+  "results": [
+    {
+      "id": "reschedule-notify",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 6149,
+      "calls": 1,
+      "inputTokens": 667,
+      "outputTokens": 305,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "our onboarding call",
+          "new_time": "next Tuesday",
+          "notify_attendees": true
+        },
+        "summary": "Move our onboarding call to next Tuesday and notify attendees, with sending the updated agenda to the team requiring a separate action."
+      }
+    },
+    {
+      "id": "reschedule-plain",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2110,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 59,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "weekly sync",
+          "new_time": "Thursday at 3pm",
+          "notify_attendees": false
+        },
+        "summary": "Move the weekly sync to Thursday at 3pm."
+      }
+    },
+    {
+      "id": "reschedule-negated-notify",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2643,
+      "calls": 1,
+      "inputTokens": 665,
+      "outputTokens": 66,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "my 1:1 with Deniz",
+          "new_time": "tomorrow morning",
+          "notify_attendees": false
+        },
+        "summary": "Move your 1:1 with Deniz to tomorrow morning without notifying anyone."
+      }
+    },
+    {
+      "id": "reschedule-no-time",
+      "lang": "en",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected none, got reschedule_meeting"
+      ],
+      "ms": 5884,
+      "calls": 1,
+      "inputTokens": 654,
+      "outputTokens": 244,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "design review",
+          "new_time": "later",
+          "notify_attendees": false
+        },
+        "summary": "Push the design review to a later time, with the exact time still to be specified."
+      }
+    },
+    {
+      "id": "reschedule-implicit",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2067,
+      "calls": 1,
+      "inputTokens": 666,
+      "outputTokens": 56,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "investor call",
+          "new_time": "Friday",
+          "notify_attendees": true
+        },
+        "summary": "Move the investor call to Friday and notify all attendees."
+      }
+    },
+    {
+      "id": "reschedule-from-to",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2818,
+      "calls": 1,
+      "inputTokens": 664,
+      "outputTokens": 92,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "board meeting",
+          "new_time": "Wednesday 10:00",
+          "notify_attendees": true
+        },
+        "summary": "Move the board meeting from Monday to Wednesday 10:00 and notify the attendees."
+      }
+    },
+    {
+      "id": "reschedule-time-only",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2199,
+      "calls": 1,
+      "inputTokens": 658,
+      "outputTokens": 58,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "tomorrow's standup",
+          "new_time": "11am",
+          "notify_attendees": false
+        },
+        "summary": "Move tomorrow's standup to 11am."
+      }
+    },
+    {
+      "id": "reschedule-multi-request",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2038,
+      "calls": 1,
+      "inputTokens": 661,
+      "outputTokens": 61,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "demo",
+          "new_time": "Friday",
+          "notify_attendees": false
+        },
+        "summary": "Move the demo to Friday; the request also asks for a reminder to prepare the slides."
+      }
+    },
+    {
+      "id": "email-address",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2247,
+      "calls": 1,
+      "inputTokens": 663,
+      "outputTokens": 73,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "sarah@acme.com"
+          ],
+          "subject": "Overdue Q3 invoice",
+          "body": "The Q3 invoice is overdue."
+        },
+        "summary": "Send an email to sarah@acme.com stating that the Q3 invoice is overdue."
+      }
+    },
+    {
+      "id": "email-name",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3534,
+      "calls": 1,
+      "inputTokens": 659,
+      "outputTokens": 184,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Mert"
+          ],
+          "subject": "Tomorrow's deploy window",
+          "body": "Hi Mert,\n\nI'm reaching out about tomorrow's deploy window."
+        },
+        "summary": "Send Mert a note about tomorrow's deploy window."
+      }
+    },
+    {
+      "id": "email-support",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2259,
+      "calls": 1,
+      "inputTokens": 662,
+      "outputTokens": 68,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "support@vendor.io"
+          ],
+          "subject": "API key stopped working",
+          "body": "Hi, why has our API key stopped working?"
+        },
+        "summary": "Email support@vendor.io to ask why our API key stopped working."
+      }
+    },
+    {
+      "id": "email-informal",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 1885,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 56,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Ayse"
+          ],
+          "subject": "Contract signed",
+          "body": "The contract is signed."
+        },
+        "summary": "Send Ayse an email saying the contract is signed."
+      }
+    },
+    {
+      "id": "email-two-recipients",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 5556,
+      "calls": 1,
+      "inputTokens": 665,
+      "outputTokens": 268,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "finance@codesxlab.com",
+            "ops@codesxlab.com"
+          ],
+          "subject": "Invoice summary",
+          "body": ""
+        },
+        "summary": "Email the invoice summary to finance@codesxlab.com and ops@codesxlab.com, with the message body still needing the invoice summary content."
+      }
+    },
+    {
+      "id": "email-no-recipient",
+      "lang": "en",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected none, got send_email"
+      ],
+      "ms": 6327,
+      "calls": 1,
+      "inputTokens": 654,
+      "outputTokens": 255,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "operations@company.com"
+          ],
+          "subject": "Urgent: Service Outage Update",
+          "body": "Hi team,\n\nWe are currently experiencing a service outage affecting customers. Engineering is investigating and expects to restore service within the next hour. Please monitor the status page for updates.\n\nThanks"
+        },
+        "summary": "Send an urgent outage update to the operations team explaining that engineering is investigating and service should be restored within an hour."
+      }
+    },
+    {
+      "id": "task-reminder",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2094,
+      "calls": 1,
+      "inputTokens": 656,
+      "outputTokens": 51,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "renew the domain",
+          "due": "Friday",
+          "assignee": null
+        },
+        "summary": "Create a reminder to renew the domain by Friday."
+      }
+    },
+    {
+      "id": "task-assignee",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2534,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 59,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "update the pricing page",
+          "due": "next week",
+          "assignee": "Elif"
+        },
+        "summary": "Create a task for Elif to update the pricing page next week."
+      }
+    },
+    {
+      "id": "task-dont-forget",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2004,
+      "calls": 1,
+      "inputTokens": 657,
+      "outputTokens": 51,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "call the bank",
+          "due": "tomorrow",
+          "assignee": null
+        },
+        "summary": "Create a reminder to call the bank tomorrow."
+      }
+    },
+    {
+      "id": "task-implicit",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2794,
+      "calls": 1,
+      "inputTokens": 663,
+      "outputTokens": 141,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Finish the SOC 2 questionnaire",
+          "due": "before the end of the month",
+          "assignee": null
+        },
+        "summary": "Create a task to finish the SOC 2 questionnaire before the end of the month."
+      }
+    },
+    {
+      "id": "task-assign-it",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2508,
+      "calls": 1,
+      "inputTokens": 664,
+      "outputTokens": 60,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "review the Q4 roadmap",
+          "due": "Monday",
+          "assignee": "Can"
+        },
+        "summary": "Create a task to review the Q4 roadmap on Monday, assigned to Can."
+      }
+    },
+    {
+      "id": "none-question",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2987,
+      "calls": 1,
+      "inputTokens": 654,
+      "outputTokens": 37,
+      "output": {
+        "kind": "none",
+        "reason": "The request asks for weather information in Istanbul, which is not covered by the available actions."
+      }
+    },
+    {
+      "id": "none-smalltalk",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2486,
+      "calls": 1,
+      "inputTokens": 654,
+      "outputTokens": 32,
+      "output": {
+        "kind": "none",
+        "reason": "The request closes the conversation and does not ask for an action."
+      }
+    },
+    {
+      "id": "none-out-of-catalog-payment",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2144,
+      "calls": 1,
+      "inputTokens": 658,
+      "outputTokens": 28,
+      "output": {
+        "kind": "none",
+        "reason": "Wiring money is not an available action."
+      }
+    },
+    {
+      "id": "none-out-of-catalog-destructive",
+      "lang": "en",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2319,
+      "calls": 1,
+      "inputTokens": 655,
+      "outputTokens": 31,
+      "output": {
+        "kind": "none",
+        "reason": "Deleting customer records from a database is not an available action."
+      }
+    },
+    {
+      "id": "tr-reschedule-notify",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 10290,
+      "calls": 1,
+      "inputTokens": 673,
+      "outputTokens": 401,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Onboarding görüşmemizi",
+          "new_time": "gelecek salıya",
+          "notify_attendees": true
+        },
+        "summary": "Onboarding görüşmesi gelecek salıya alınacak; ekibe güncel gündemin gönderilmesi de isteniyor."
+      }
+    },
+    {
+      "id": "tr-reschedule-plain",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3626,
+      "calls": 1,
+      "inputTokens": 666,
+      "outputTokens": 153,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Haftalık senkron toplantısı",
+          "new_time": "perşembe saat 15:00",
+          "notify_attendees": false
+        },
+        "summary": "Haftalık senkron toplantısı perşembe saat 15:00'e taşınacak."
+      }
+    },
+    {
+      "id": "tr-reschedule-negated-notify",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 4150,
+      "calls": 1,
+      "inputTokens": 672,
+      "outputTokens": 176,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Deniz'le birebir görüşmem",
+          "new_time": "yarın sabaha",
+          "notify_attendees": false
+        },
+        "summary": "Deniz'le birebir görüşme, kimseye haber verilmeden yarın sabaha kaydırılacak."
+      }
+    },
+    {
+      "id": "tr-reschedule-no-time",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected none, got reschedule_meeting"
+      ],
+      "ms": 5440,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 247,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Tasarım incelemesi",
+          "new_time": "null",
+          "notify_attendees": false
+        },
+        "summary": "Tasarım incelemesi ertelenecek; yeni zaman belirtilmedi."
+      }
+    },
+    {
+      "id": "tr-reschedule-implicit",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3371,
+      "calls": 1,
+      "inputTokens": 673,
+      "outputTokens": 103,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Yatırımcı görüşmesi",
+          "new_time": "cumaya",
+          "notify_attendees": true
+        },
+        "summary": "Yatırımcı görüşmesi cumaya alınacak ve herkese haber verilecek."
+      }
+    },
+    {
+      "id": "tr-reschedule-from-to",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3592,
+      "calls": 1,
+      "inputTokens": 677,
+      "outputTokens": 198,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Yönetim kurulu toplantısı",
+          "new_time": "çarşamba 10:00",
+          "notify_attendees": true
+        },
+        "summary": "Yönetim kurulu toplantısı pazartesiden çarşamba 10:00'a alınacak ve katılımcılar bilgilendirilecek."
+      }
+    },
+    {
+      "id": "tr-reschedule-time-only",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3018,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 134,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Yarınki stand-up",
+          "new_time": "11",
+          "notify_attendees": false
+        },
+        "summary": "Yarınki stand-up 11'e ertelenecek."
+      }
+    },
+    {
+      "id": "tr-reschedule-multi-request",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 7017,
+      "calls": 1,
+      "inputTokens": 668,
+      "outputTokens": 300,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Demo",
+          "new_time": "cumaya",
+          "notify_attendees": false
+        },
+        "summary": "Demo cumaya ertelenecek; ayrıca slaytları hazırlamanız için hatırlatma oluşturma talebiniz var."
+      }
+    },
+    {
+      "id": "reschedule-turkish",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3535,
+      "calls": 1,
+      "inputTokens": 659,
+      "outputTokens": 192,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Yarınki toplantı",
+          "new_time": "cuma gününe",
+          "notify_attendees": false
+        },
+        "summary": "Yarınki toplantı cuma gününe ertelenecek."
+      }
+    },
+    {
+      "id": "tr-email-address",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3411,
+      "calls": 1,
+      "inputTokens": 673,
+      "outputTokens": 218,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "sarah@acme.com"
+          ],
+          "subject": "Üçüncü çeyrek faturası",
+          "body": "Merhaba,\n\nÜçüncü çeyrek faturasının ödemesi gecikti."
+        },
+        "summary": "sarah@acme.com adresine üçüncü çeyrek faturasının ödemesinin geciktiğini belirten bir e-posta gönderilecek."
+      }
+    },
+    {
+      "id": "tr-email-name",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 4133,
+      "calls": 1,
+      "inputTokens": 664,
+      "outputTokens": 222,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Mert"
+          ],
+          "subject": "Yarınki deploy penceresi",
+          "body": "Mert, yarınki deploy penceresiyle ilgili yazıyorum."
+        },
+        "summary": "Mert'e yarınki deploy penceresiyle ilgili kısa bir e-posta gönderilecek."
+      }
+    },
+    {
+      "id": "tr-email-support",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3449,
+      "calls": 1,
+      "inputTokens": 666,
+      "outputTokens": 186,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "support@vendor.io"
+          ],
+          "subject": "API anahtarımız neden çalışmıyor?",
+          "body": "Merhaba,\n\nAPI anahtarımızın neden çalışmadığını açıklayabilir misiniz?\n\nTeşekkürler."
+        },
+        "summary": "support@vendor.io adresine API anahtarımızın neden çalışmadığını soran bir e-posta gönderilecek."
+      }
+    },
+    {
+      "id": "tr-email-informal",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3145,
+      "calls": 1,
+      "inputTokens": 665,
+      "outputTokens": 144,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Elif"
+          ],
+          "subject": "Sözleşme imzalandı",
+          "body": "Sözleşme imzalandı."
+        },
+        "summary": "Elif'e sözleşmenin imzalandığını bildiren bir e-posta gönderilecek."
+      }
+    },
+    {
+      "id": "tr-email-two-recipients",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 6300,
+      "calls": 1,
+      "inputTokens": 673,
+      "outputTokens": 346,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "finance@codesxlab.com",
+            "ops@codesxlab.com"
+          ],
+          "subject": "Fatura özeti",
+          "body": ""
+        },
+        "summary": "finance@codesxlab.com ve ops@codesxlab.com adreslerine “Fatura özeti” konulu e-posta gönderilecek, ancak özet içeriği istekte verilmediği için mesaj gövdesi boş bırakıldı."
+      }
+    },
+    {
+      "id": "tr-email-no-recipient",
+      "lang": "tr",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected none, got send_email"
+      ],
+      "ms": 5643,
+      "calls": 1,
+      "inputTokens": 657,
+      "outputTokens": 282,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            ""
+          ],
+          "subject": "Kesinti hakkında",
+          "body": ""
+        },
+        "summary": "Kesintiyle ilgili bir e-posta gönderilecek; alıcı ve mesaj içeriği belirtilmedi."
+      }
+    },
+    {
+      "id": "tr-task-reminder",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3717,
+      "calls": 1,
+      "inputTokens": 661,
+      "outputTokens": 170,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Alan adını yenile",
+          "due": "Cumaya kadar",
+          "assignee": null
+        },
+        "summary": "Cumaya kadar alan adını yenilemeniz için bir hatırlatma oluşturulacak."
+      }
+    },
+    {
+      "id": "tr-task-assignee",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2833,
+      "calls": 1,
+      "inputTokens": 665,
+      "outputTokens": 121,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Fiyat sayfasını güncelleme",
+          "due": "gelecek hafta",
+          "assignee": "Elif"
+        },
+        "summary": "Elif için gelecek hafta fiyat sayfasını güncelleme görevi oluşturulacak."
+      }
+    },
+    {
+      "id": "tr-task-dont-forget",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3830,
+      "calls": 1,
+      "inputTokens": 659,
+      "outputTokens": 157,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Bankayı aramak",
+          "due": "Yarın",
+          "assignee": null
+        },
+        "summary": "Yarın bankayı aramak için bir hatırlatıcı oluşturulacak."
+      }
+    },
+    {
+      "id": "tr-task-implicit",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 4236,
+      "calls": 1,
+      "inputTokens": 663,
+      "outputTokens": 171,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "SOC 2 anketini bitirmek",
+          "due": "ay sonundan önce",
+          "assignee": null
+        },
+        "summary": "SOC 2 anketini ay sonundan önce bitirmek için bir görev oluşturulacak."
+      }
+    },
+    {
+      "id": "tr-task-assign-it",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3660,
+      "calls": 1,
+      "inputTokens": 669,
+      "outputTokens": 127,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Q4 yol haritasını gözden geçirmek",
+          "due": "Pazartesi",
+          "assignee": "Can"
+        },
+        "summary": "Pazartesi Q4 yol haritasını gözden geçirmek için bir görev oluşturulacak ve Can'a atanacak."
+      }
+    },
+    {
+      "id": "tr-none-question",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2746,
+      "calls": 1,
+      "inputTokens": 654,
+      "outputTokens": 62,
+      "output": {
+        "kind": "none",
+        "reason": "İstek İstanbul'daki hava durumunu soruyor; mevcut eylemlerden hiçbiri bu isteğe uygun değil."
+      }
+    },
+    {
+      "id": "tr-none-smalltalk",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2534,
+      "calls": 1,
+      "inputTokens": 657,
+      "outputTokens": 57,
+      "output": {
+        "kind": "none",
+        "reason": "Kullanıcı teşekkür edip konuşmayı bitiriyor; herhangi bir işlem istemiyor."
+      }
+    },
+    {
+      "id": "tr-none-out-of-catalog-payment",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2385,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 61,
+      "output": {
+        "kind": "none",
+        "reason": "Para havalesi, kullanılabilir eylemler arasında değil."
+      }
+    },
+    {
+      "id": "tr-none-out-of-catalog-destructive",
+      "lang": "tr",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2483,
+      "calls": 1,
+      "inputTokens": 658,
+      "outputTokens": 60,
+      "output": {
+        "kind": "none",
+        "reason": "Veritabanındaki müşteri kayıtlarını silmek, kullanılabilir eylemler arasında değil."
+      }
+    },
+    {
+      "id": "de-reschedule-notify",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 4177,
+      "calls": 1,
+      "inputTokens": 670,
+      "outputTokens": 221,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Onboarding-Call",
+          "new_time": "nächsten Dienstag",
+          "notify_attendees": true
+        },
+        "summary": "Der Onboarding-Call wird auf nächsten Dienstag verschoben, und die Truppe soll außerdem die neue Agenda erhalten."
+      }
+    },
+    {
+      "id": "de-reschedule-plain",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3572,
+      "calls": 1,
+      "inputTokens": 663,
+      "outputTokens": 122,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "das wöchentliche Sync",
+          "new_time": "Donnerstag, 15 Uhr",
+          "notify_attendees": false
+        },
+        "summary": "Das wöchentliche Sync wird auf Donnerstag, 15 Uhr verlegt."
+      }
+    },
+    {
+      "id": "de-reschedule-negated-notify",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2398,
+      "calls": 1,
+      "inputTokens": 666,
+      "outputTokens": 73,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "mein 1:1 mit Deniz",
+          "new_time": "morgen früh",
+          "notify_attendees": false
+        },
+        "summary": "Dein 1:1 mit Deniz wird auf morgen früh verschoben, ohne jemanden zu benachrichtigen."
+      }
+    },
+    {
+      "id": "de-reschedule-no-time",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected none, got reschedule_meeting"
+      ],
+      "ms": 5795,
+      "calls": 1,
+      "inputTokens": 658,
+      "outputTokens": 191,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Design-Review",
+          "new_time": "",
+          "notify_attendees": false
+        },
+        "summary": "Das Design-Review wird verschoben, wobei der neue Zeitpunkt noch festgelegt werden muss."
+      }
+    },
+    {
+      "id": "de-reschedule-implicit",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3945,
+      "calls": 1,
+      "inputTokens": 671,
+      "outputTokens": 101,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Investoren-Call",
+          "new_time": "Freitag",
+          "notify_attendees": true
+        },
+        "summary": "Der Investoren-Call wird auf Freitag verschoben und alle Teilnehmenden werden darüber informiert."
+      }
+    },
+    {
+      "id": "de-reschedule-from-to",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3092,
+      "calls": 1,
+      "inputTokens": 672,
+      "outputTokens": 78,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Vorstandssitzung",
+          "new_time": "Mittwoch, 10 Uhr",
+          "notify_attendees": true
+        },
+        "summary": "Die Vorstandssitzung wird von Montag auf Mittwoch, 10 Uhr, verschoben und die Teilnehmer werden benachrichtigt."
+      }
+    },
+    {
+      "id": "de-reschedule-time-only",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 6609,
+      "calls": 1,
+      "inputTokens": 658,
+      "outputTokens": 295,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Stand-up morgen",
+          "new_time": "11 Uhr",
+          "notify_attendees": false
+        },
+        "summary": "Das Stand-up morgen wird auf 11 Uhr verschoben."
+      }
+    },
+    {
+      "id": "de-reschedule-multi-request",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 5675,
+      "calls": 1,
+      "inputTokens": 664,
+      "outputTokens": 273,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Demo",
+          "new_time": "Freitag",
+          "notify_attendees": false
+        },
+        "summary": "Die Demo wird auf Freitag verschoben; zusätzlich möchtest du eine Erinnerung, die Folien vorzubereiten."
+      }
+    },
+    {
+      "id": "de-reschedule-short",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3041,
+      "calls": 1,
+      "inputTokens": 657,
+      "outputTokens": 104,
+      "output": {
+        "kind": "action",
+        "action": "reschedule_meeting",
+        "params": {
+          "meeting": "Meeting von morgen",
+          "new_time": "Freitag",
+          "notify_attendees": false
+        },
+        "summary": "Das Meeting von morgen wird auf Freitag verschoben."
+      }
+    },
+    {
+      "id": "de-email-address",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 5234,
+      "calls": 1,
+      "inputTokens": 668,
+      "outputTokens": 248,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "sarah@acme.com"
+          ],
+          "subject": "Überfällige Q3-Rechnung",
+          "body": "Hallo,\n\ndie Q3-Rechnung ist überfällig."
+        },
+        "summary": "An sarah@acme.com wird eine E-Mail mit dem Hinweis gesendet, dass die Q3-Rechnung überfällig ist."
+      }
+    },
+    {
+      "id": "de-email-name",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 4960,
+      "calls": 1,
+      "inputTokens": 664,
+      "outputTokens": 269,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Mert"
+          ],
+          "subject": "Deploy-Fenster morgen",
+          "body": "Hallo Mert,\nich melde mich kurz wegen des Deploy-Fensters morgen."
+        },
+        "summary": "Mert erhält eine kurze Mail wegen des Deploy-Fensters morgen."
+      }
+    },
+    {
+      "id": "de-email-support",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3710,
+      "calls": 1,
+      "inputTokens": 666,
+      "outputTokens": 200,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "support@vendor.io"
+          ],
+          "subject": "Unser API-Key funktioniert nicht mehr",
+          "body": "Hallo,\n\nunser API-Key funktioniert nicht mehr. Könnt ihr uns sagen, warum?\n\nVielen Dank!"
+        },
+        "summary": "Eine E-Mail an support@vendor.io wird gesendet, um nachzufragen, warum unser API-Key nicht mehr geht."
+      }
+    },
+    {
+      "id": "de-email-informal",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2379,
+      "calls": 1,
+      "inputTokens": 663,
+      "outputTokens": 65,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Elif"
+          ],
+          "subject": "Vertrag unterschrieben",
+          "body": "Der Vertrag ist unterschrieben."
+        },
+        "summary": "Elif erhält eine E-Mail mit der Nachricht, dass der Vertrag unterschrieben ist."
+      }
+    },
+    {
+      "id": "de-email-two-recipients",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 4696,
+      "calls": 1,
+      "inputTokens": 668,
+      "outputTokens": 249,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "finance@codesxlab.com",
+            "ops@codesxlab.com"
+          ],
+          "subject": "Rechnungsübersicht",
+          "body": "Rechnungsübersicht"
+        },
+        "summary": "Die Rechnungsübersicht wird per E-Mail an finance@codesxlab.com und ops@codesxlab.com gesendet."
+      }
+    },
+    {
+      "id": "de-email-no-recipient",
+      "lang": "de",
+      "ok": false,
+      "actionOk": false,
+      "problems": [
+        "action: expected none, got send_email"
+      ],
+      "ms": 7688,
+      "calls": 1,
+      "inputTokens": 658,
+      "outputTokens": 323,
+      "output": {
+        "kind": "action",
+        "action": "send_email",
+        "params": {
+          "to": [
+            "Team"
+          ],
+          "subject": "Ausfall",
+          "body": "Hallo zusammen, ich möchte euch über den aktuellen Ausfall informieren. Wir arbeiten bereits an einer Lösung und melden uns, sobald alles wieder läuft."
+        },
+        "summary": "Eine E-Mail informiert das Team über den Ausfall und die laufende Behebung."
+      }
+    },
+    {
+      "id": "de-task-reminder",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 3646,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 131,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Domain verlängern",
+          "due": "bis Freitag",
+          "assignee": null
+        },
+        "summary": "Es wird eine Erinnerung erstellt, die Domain bis Freitag zu verlängern."
+      }
+    },
+    {
+      "id": "de-task-assignee",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 1986,
+      "calls": 1,
+      "inputTokens": 664,
+      "outputTokens": 68,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "die Preisseite aktualisieren",
+          "due": "nächste Woche",
+          "assignee": "Elif"
+        },
+        "summary": "Für Elif wird eine Aufgabe angelegt, nächste Woche die Preisseite zu aktualisieren."
+      }
+    },
+    {
+      "id": "de-task-dont-forget",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2607,
+      "calls": 1,
+      "inputTokens": 660,
+      "outputTokens": 54,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Die Bank anrufen",
+          "due": "morgen",
+          "assignee": null
+        },
+        "summary": "Eine Erinnerung wird erstellt, morgen die Bank anzurufen."
+      }
+    },
+    {
+      "id": "de-task-implicit",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 5656,
+      "calls": 1,
+      "inputTokens": 663,
+      "outputTokens": 246,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "SOC-2-Fragebogen fertig kriegen",
+          "due": "bis Monatsende",
+          "assignee": null
+        },
+        "summary": "Es wird eine Aufgabe erstellt, den SOC-2-Fragebogen bis Monatsende fertig zu kriegen."
+      }
+    },
+    {
+      "id": "de-task-assign-it",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2257,
+      "calls": 1,
+      "inputTokens": 668,
+      "outputTokens": 70,
+      "output": {
+        "kind": "action",
+        "action": "create_task",
+        "params": {
+          "title": "Q4-Roadmap durchgehen",
+          "due": "am Montag",
+          "assignee": "Can"
+        },
+        "summary": "Eine Aufgabe wird angelegt, am Montag die Q4-Roadmap durchzugehen, und Can zugewiesen."
+      }
+    },
+    {
+      "id": "de-none-question",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2196,
+      "calls": 1,
+      "inputTokens": 654,
+      "outputTokens": 48,
+      "output": {
+        "kind": "none",
+        "reason": "Die Frage nach dem Wetter in Istanbul passt zu keiner der verfügbaren Aktionen."
+      }
+    },
+    {
+      "id": "de-none-smalltalk",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2390,
+      "calls": 1,
+      "inputTokens": 655,
+      "outputTokens": 54,
+      "output": {
+        "kind": "none",
+        "reason": "Die Nachricht ist eine Verabschiedung und enthält keine Bitte um eine der verfügbaren Aktionen."
+      }
+    },
+    {
+      "id": "de-none-out-of-catalog-payment",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2166,
+      "calls": 1,
+      "inputTokens": 659,
+      "outputTokens": 53,
+      "output": {
+        "kind": "none",
+        "reason": "Eine Überweisung von 5.000 Dollar gehört nicht zu den verfügbaren Aktionen."
+      }
+    },
+    {
+      "id": "de-none-out-of-catalog-destructive",
+      "lang": "de",
+      "ok": true,
+      "actionOk": true,
+      "problems": [],
+      "ms": 2108,
+      "calls": 1,
+      "inputTokens": 661,
+      "outputTokens": 62,
+      "output": {
+        "kind": "none",
+        "reason": "Das Löschen aller Kundendatensätze aus der Datenbank gehört nicht zu den verfügbaren Aktionen."
+      }
+    }
+  ],
+  "notes": [
+    "de-email-no-recipient: the first run hit \"401 API key invalidated\"; re-run on 2026-10-25 with a new key (same model and settings).",
+    "costUsd is an estimate at the stated per-1M-token prices (third-party listed standard rates, not taken from an invoice)."
+  ]
+}

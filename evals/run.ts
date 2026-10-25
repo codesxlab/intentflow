@@ -8,6 +8,7 @@
  *   npm run eval -- --lang en --min-score 0.6     # only English cases; exit 1 below this full-match score (CI)
  *   npm run eval -- --provider openai --price-in 2.5 --price-out 10   # USD per 1M tokens → cost estimate
  *   npm run eval -- --provider openai --sample 1  # first case of each language: measure tokens cheaply
+ *   npm run eval -- --provider openai --ids de-email-no-recipient   # re-run specific cases
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
@@ -43,6 +44,7 @@ const { values } = parseArgs({
     "min-score": { type: "string" },
     concurrency: { type: "string", default: "1" },
     sample: { type: "string" },
+    ids: { type: "string" },
     "price-in": { type: "string" },
     "price-out": { type: "string" },
   },
@@ -50,7 +52,9 @@ const { values } = parseArgs({
 
 const langs = values.lang?.split(",").map((l) => l.trim().toLowerCase()).filter(Boolean);
 const allCases = JSON.parse(readFileSync(new URL("./cases.json", import.meta.url), "utf8")) as EvalCase[];
-const selected = langs ? allCases.filter((c) => langs.includes(c.lang)) : allCases;
+// --ids a,b: only these cases, e.g. to re-run one that hit a transient API error.
+const ids = values.ids?.split(",").map((id) => id.trim()).filter(Boolean);
+const selected = allCases.filter((c) => (!langs || langs.includes(c.lang)) && (!ids || ids.includes(c.id)));
 // --sample N: the first N cases of each language, to measure tokens cheaply before a full run.
 const sample = values.sample ? Math.max(1, Number(values.sample)) : undefined;
 const cases = sample

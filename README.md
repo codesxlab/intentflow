@@ -12,9 +12,11 @@ intentflow takes a free-text request ("Move our onboarding call to next Tuesday 
 - **Model-agnostic.** Adapters for the Claude API and the OpenAI API ship in the box. A provider is one small interface, so local models or rule sets plug in the same way.
 - **Structured, validated output.** Each action's parameters are a [zod](https://zod.dev) schema. The model gets that schema as a structured-output format, and every result is validated again before it reaches the queue. Invalid output is retried once, then reported.
 - **Human-in-the-loop by design.** Proposals start as `pending`. Executors run only from `approve()`, every decision needs a reviewer name, and each proposal keeps an audit trail.
-- **Measured.** An eval suite of realistic requests (including negations, implicit requests, out-of-catalog asks, and a Turkish example) reports action and parameter accuracy per provider.
+- **Measured.** 71 realistic requests in English, Turkish, and German (negations, implicit requests, missing details, out-of-catalog asks) report action and parameter accuracy per provider and language, with the tokens each call used. [Results below.](#evals)
 
-> **Status:** early prototype by [CodesXlab](https://www.codesxlab.com). The API may change, the queue is in-memory, and the package is not published to npm yet.
+**[Try the live demo →](https://codesxlab.github.io/intentflow/)** It runs in your browser with the rule-based mock provider; nothing you type leaves the page.
+
+> **Status:** early prototype by [CodesXlab](https://www.codesxlab.com). The API may change, the queue is in-memory, and the package is not published to npm yet (it will be `@codesxlab/intentflow`).
 
 ## How it works
 
@@ -26,7 +28,7 @@ intentflow takes a free-text request ("Move our onboarding call to next Tuesday 
 
 ## Quickstart
 
-Requires Node.js 20 or later.
+Requires Node.js 22 or later.
 
 ```bash
 git clone https://github.com/codesxlab/intentflow.git
@@ -48,7 +50,7 @@ The demo's executors are simulated: approving shows what *would* happen. Nothing
 
 ```ts
 import { z } from "zod";
-import { ApprovalQueue, anthropicProvider, createIntentFlow, defineAction } from "intentflow";
+import { ApprovalQueue, anthropicProvider, createIntentFlow, defineAction } from "@codesxlab/intentflow";
 
 const actions = [
   defineAction({
@@ -105,18 +107,28 @@ Throw `ProviderOutputError` for retryable output problems and `ProviderRefusalEr
 ## Evals
 
 ```bash
-npm run eval                                  # mock provider
-npm run eval -- --provider anthropic          # needs ANTHROPIC_API_KEY
-npm run eval -- --provider openai --json results.json
+npm run eval                                            # mock provider, all languages
+node --env-file=.env --import tsx evals/run.ts --provider openai --json out.json
+npm run eval -- --provider openai --sample 1            # first case per language: measure tokens cheaply
+npm run eval -- --lang tr,de                            # only some languages
+npm run eval -- --provider openai --price-in 10 --price-out 50   # USD per 1M tokens → cost estimate
+npm run eval -- --ids de-email-no-recipient             # re-run specific cases
 ```
 
-`evals/cases.json` holds 24 requests with the expected action and the parameters a reviewer would check. Current baseline:
+[`evals/cases.json`](evals/cases.json) holds 71 requests (23 English, 24 Turkish, 24 German) with the expected action and the parameters a reviewer would check. Every language covers the same situations: plain and implicit requests, negations ("no need to tell anyone"), several requests in one sentence, missing details, and out-of-catalog asks (payments, deleting data).
 
-| Provider | Action accuracy | Full match (action + params) |
-|---|---|---|
-| `mock` (keyword rules) | 83.3% | 70.8% |
+Measured on 2026-10-25, full match (action + parameters) with action accuracy in brackets:
 
-The rule-based baseline misses negations ("no need to tell anyone"), implicit requests, multi-date sentences, and non-English input; those cases are where a model should earn its cost. CI fails if the baseline drops below 70%. LLM results will be added here once they are measured.
+| Provider · model | English | Turkish | German | All | Tokens per case |
+|---|---|---|---|---|---|
+| `openai` · `gpt-6-astra` | 91.3% (91.3%) | 91.7% (91.7%) | 91.7% (91.7%) | **91.5%** (91.5%) | 663 in · 144 out |
+| `mock` · `rules-v1` (keyword rules) | 73.9% (87.0%) | 25.0% (25.0%) | 25.0% (25.0%) | 40.8% (45.1%) | – |
+
+Raw results, including every model output: [`evals/published/`](evals/published/). The full gpt-6-astra run (71 calls, 47,041 input and 10,221 output tokens) cost about $0.98 at the listed standard rates of $10 / $50 per 1M tokens.
+
+**What the numbers show.** The model gets every action right in all three languages, with one exception that repeats in each language: requests that **leave out a required detail**. Asked "Can we push the design review?" (no new time) or "Send an email about the outage" (no recipient), it proposes the action anyway instead of returning `none`, filling the gap with `"later"`, an empty string, or, in one English case, an invented address (`operations@company.com`) and an invented message. These six cases are why intentflow keeps a person in the loop, and they are the next thing to fix: stricter schemas (no empty required strings) and a prompt rule for missing details, then the same suite again.
+
+The keyword baseline only knows English, so in Turkish and German it can only get the "no action" cases right. CI runs it on the English cases and fails if it drops below 70%.
 
 ## Project layout
 
@@ -128,8 +140,8 @@ src/
   flow.ts           createIntentFlow(): extract, validate, retry
   queue.ts          ApprovalQueue: pending → approved/rejected → executed/failed, with audit trail
   providers/        anthropic.ts, openai.ts, mock.ts
-demo/               local web demo (node:http + one HTML page)
-evals/              cases.json and the runner
+demo/               local web demo (node:http + one HTML page); build-site.ts makes the hosted version
+evals/              cases.json, the runner, and published/ results
 tests/              node:test suites
 ```
 
@@ -143,9 +155,11 @@ npm run eval
 
 ## Roadmap
 
+- Handle missing details: no empty required fields, return `none` with the missing detail named; re-run the evals
+- Publish to npm as `@codesxlab/intentflow`
+- Eval results for more providers and models (Claude, smaller OpenAI models) and more languages
 - Persistent queue storage (SQLite / Postgres adapters)
 - More action catalogs (CRM updates, support triage, document intake)
-- Published eval results per provider and model
 - Inbound connectors (email, Slack, webhooks) that feed the queue
 
 ## License
